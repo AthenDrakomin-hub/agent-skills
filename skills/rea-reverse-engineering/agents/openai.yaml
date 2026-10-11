@@ -1,0 +1,4 @@
+interface:
+  display_name: "rea-reverse-engineering"
+  short_description: "基于REA对二进制/APK/Electron/固件执行带证据的逆向分析"
+  default_prompt: "使用 $rea-reverse-engineering 对指定目标执行逆向分析，先检测环境，再按目标类型路由分析，最终输出带证据链的结构化报告。"
