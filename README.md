@@ -2,12 +2,13 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (8)
+## Skills (9)
 
 ### Development & Engineering
 
 | Skill | Description |
 |---|---|
+| [reverse-engineering-suite](./skills/reverse-engineering-suite/SKILL.md) | Unified reverse-engineering: source code→PRD, binary→analysis+reimplementation, website→behavior reconstruction. Auto-detects target type, no manual routing needed. |
 | [code-to-prd](./skills/code-to-prd/SKILL.md) | Reverse-engineer any codebase into a complete PRD. Analyzes routes, components, state, APIs, and interactions to produce reconstruction-ready documentation. Supports React/Vue/Angular/Next.js/NestJS/Django/FastAPI. |
 | [github-tech-optimizer](./skills/github-tech-optimizer/SKILL.md) | Scan project tech stack, research free/open-source alternatives, enforce visual demo walkthrough, output executable optimization plans with cleanup. |
 | [git-safety-guard](./skills/git-safety-guard/SKILL.md) | Pre-commit secret scanning, .gitignore audit, and pull-modify-commit-push workflow enforcement. |
