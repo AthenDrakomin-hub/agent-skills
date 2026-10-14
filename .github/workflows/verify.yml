@@ -1,0 +1,76 @@
+name: Skill Validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 18 * * *'  # Daily at 18:00 UTC = 02:00 Manila time
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate all skills recognized
+        run: npx -y skills add ./ --list
+
+      - name: Check SKILL.md naming convention
+        run: |
+          echo "Checking folder name == frontmatter name..."
+          FAIL=0
+          for dir in skills/*/; do
+            folder=$(basename "$dir")
+            name=$(grep -m1 '^name:' "$dir/SKILL.md" 2>/dev/null | sed 's/^name:[[:space:]]*//' | tr -d '"' | tr -d "'")
+            if [ "$folder" != "$name" ]; then
+              echo "MISMATCH: folder=$folder frontmatter.name=$name"
+              FAIL=1
+            fi
+            # Check name format: lowercase, hyphens, no leading/trailing hyphen
+            if ! echo "$name" | grep -qE '^[a-z][a-z0-9-]*[a-z0-9]$'; then
+              echo "BAD NAME: $name (must be lowercase-hyphen format)"
+              FAIL=1
+            fi
+          done
+          exit $FAIL
+
+      - name: Check line count under 500
+        run: |
+          echo "Checking SKILL.md line counts..."
+          FAIL=0
+          for f in skills/*/SKILL.md; do
+            lines=$(wc -l < "$f")
+            if [ "$lines" -gt 500 ]; then
+              echo "OVER 500 LINES: $f ($lines lines)"
+              FAIL=1
+            fi
+          done
+          exit $FAIL
+
+      - name: Check for hardcoded local paths
+        run: |
+          echo "Scanning for hardcoded local paths..."
+          if grep -rnE 'C:\\\\Users\\\\|/Users/[a-z]+/|/home/[a-z]+/' skills/ --include="*.md" --include="*.py" --include="*.ps1" --include="*.sh"; then
+            echo "Found hardcoded paths!"
+            exit 1
+          fi
+          echo "No hardcoded paths found."
+
+      - name: Verify README lists all skills
+        run: |
+          echo "Checking README coverage..."
+          for dir in skills/*/; do
+            folder=$(basename "$dir")
+            if ! grep -q "$folder" README.md; then
+              echo "MISSING FROM README: $folder"
+              exit 1
+            fi
+          done
+          echo "All skills listed in README."
