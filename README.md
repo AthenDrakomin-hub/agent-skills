@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (21)
+## Skills (26)
 
 ### Development & Engineering
 
@@ -18,7 +18,22 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | [rea-reverse-engineering](./skills/rea-reverse-engineering/SKILL.md) | AI-assisted reverse engineering via REA MCP Server (115K stars). Orchestrates Hopper/Ghidra/JADX/Binwalk for binaries, APKs, Electron apps, .NET assemblies, websites. Evidence-based analysis + functional-equivalent reimplementation. |
 | [context-mode](./skills/context-mode/SKILL.md) | MCP server that optimizes AI coding context windows. Sandbox execution + FTS5 indexing reduces context consumption by 98%. Session continuity across compaction. Think-in-code paradigm. |
 | [skills-cli](./skills/skills-cli/SKILL.md) | Vercel Labs open-source CLI for agent skills ecosystem. Install/discover/update/share skills across 80+ AI coding agents. `npx skills add/find/update/validate`. |
+| [airllm](./skills/airllm/SKILL.md) | Run 70B+ LLMs on single 4GB GPU via layer-by-layer loading. No quantization, full precision. Drop-in transformers replacement. ~20s/token for 70B on 4GB. |
+| [xtool](./skills/xtool/SKILL.md) | Cross-platform Xcode alternative. Build/test/deploy iOS apps from Linux/Windows/macOS via SwiftPM. No Mac required for compilation. CI/CD friendly. |
 | [using-coze-cli](./skills/using-coze-cli/SKILL.md) | Coze CLI multi-module usage guide covering agent collaboration, code generation, file operations, and content creation workflows. |
+
+### Creative & Media
+
+| Skill | Description |
+|---|---|
+| [artcraft](./skills/artcraft/SKILL.md) | Open-source AI image/video creation IDE. Build 3D scenes, pose objects, light and photograph, feed renders back into generation. Consistent characters across angles. Local + browser. |
+| [voice-studio](./skills/voice-studio/SKILL.md) | Open-source local ElevenLabs alternative. Voice cloning, dubbing, transcription, audiobook creation in 646 languages. Fully local, no cloud API, AGPL-3.0. |
+
+### Visualization & Data
+
+| Skill | Description |
+|---|---|
+| [gods-eye-view](./skills/gods-eye-view/SKILL.md) | Browser-based satellite imagery simulator with real public data. Weather, air traffic, maritime, seismic overlays. Surveillance-style UI. No install, runs in browser. |
 
 ### UI/UX & Mobile
 
