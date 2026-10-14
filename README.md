@@ -2,12 +2,13 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (18)
+## Skills (19)
 
 ### Development & Engineering
 
 | Skill | Description |
 |---|---|
+| [codebase-analyzer](./skills/codebase-analyzer/SKILL.md) | Read-only codebase investigation with verifiable evidence. SCOPE→ROUTE→EFFECT→BREAK→SHIP methodology. Traces call chains, data flow, runtime wiring, and module responsibility. Every conclusion traces to literal path:symbol:line. |
 | [reverse-engineering-suite](./skills/reverse-engineering-suite/SKILL.md) | Unified reverse-engineering: source code→PRD, binary→analysis+reimplementation, website→behavior reconstruction. Auto-detects target type, no manual routing needed. |
 | [code-to-prd](./skills/code-to-prd/SKILL.md) | Reverse-engineer any codebase into a complete PRD. Analyzes routes, components, state, APIs, and interactions to produce reconstruction-ready documentation. Supports React/Vue/Angular/Next.js/NestJS/Django/FastAPI. |
 | [gsap-scroll-landing](./skills/gsap-scroll-landing/SKILL.md) | Cinematic scroll-driven landing pages with GSAP + ScrollTrigger. Product parallax, per-character text reveals, fluid loop effects. Single-file HTML output, no build step. |
