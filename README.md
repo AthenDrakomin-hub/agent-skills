@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (9)
+## Skills (13)
 
 ### Development & Engineering
 
@@ -10,6 +10,7 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 |---|---|
 | [reverse-engineering-suite](./skills/reverse-engineering-suite/SKILL.md) | Unified reverse-engineering: source code→PRD, binary→analysis+reimplementation, website→behavior reconstruction. Auto-detects target type, no manual routing needed. |
 | [code-to-prd](./skills/code-to-prd/SKILL.md) | Reverse-engineer any codebase into a complete PRD. Analyzes routes, components, state, APIs, and interactions to produce reconstruction-ready documentation. Supports React/Vue/Angular/Next.js/NestJS/Django/FastAPI. |
+| [gsap-scroll-landing](./skills/gsap-scroll-landing/SKILL.md) | Cinematic scroll-driven landing pages with GSAP + ScrollTrigger. Product parallax, per-character text reveals, fluid loop effects. Single-file HTML output, no build step. |
 | [github-tech-optimizer](./skills/github-tech-optimizer/SKILL.md) | Scan project tech stack, research free/open-source alternatives, enforce visual demo walkthrough, output executable optimization plans with cleanup. |
 | [git-safety-guard](./skills/git-safety-guard/SKILL.md) | Pre-commit secret scanning, .gitignore audit, and pull-modify-commit-push workflow enforcement. |
 | [rea-reverse-engineering](./skills/rea-reverse-engineering/SKILL.md) | AI-assisted reverse engineering via REA toolchain. Analyze binaries, APKs, Electron apps, .NET assemblies, and websites to produce evidence-based analysis and functional-equivalent reimplementation. |
@@ -20,12 +21,20 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 |---|---|
 | [ios-ui-ux-dev](./skills/ios-ui-ux-dev/SKILL.md) | Multi-channel iOS UI/UX audit: screenshot walkthrough, native source audit, H5/WKWebView audit, IPA unpacking. Covers safe-area, Auto Layout, Dynamic Type, WKWebView rendering bugs, iOS 26 Liquid Glass. |
 | [uniapp-multi-platform-audit](./skills/uniapp-multi-platform-audit/SKILL.md) | uni-app iOS/Android/H5 three-platform UI/UX audit. Code-scan for layout issues, platform-specific styling, IM and game专项 checklists, with direct code fixes. |
+| [uniapp-release-notes](./skills/uniapp-release-notes/SKILL.md) | Query HBuilder X / uni-app / uni-app x changelog for version selection, API compatibility, new features, and known-bug avoidance. Offline snapshot of 33 versions with Python query script. |
 
-### DevOps & Content
+### DevOps
 
 | Skill | Description |
 |---|---|
 | [boxim-release-assistant](./skills/boxim-release-assistant/SKILL.md) | Build, deploy, health-check, and roll back the boxim IM system across 3 frontends and 3 Java backend services. |
+
+### Content & Automation
+
+| Skill | Description |
+|---|---|
+| [wechat-article-html](./skills/wechat-article-html/SKILL.md) | Convert Markdown into WeChat Official Account compatible inline-style HTML. 15 built-in themes, strict paste-compatibility rules (no style tags/classes, all styles inline). |
+| [ai-writing-detector](./skills/ai-writing-detector/SKILL.md) | Scan text for 22 AI writing patterns and produce per-location detection reports. Diagnosis-only by default, no rewriting. |
 | [douyin-to-feishu-archiver](./skills/douyin-to-feishu-archiver/SKILL.md) | Parse Douyin video links into reusable AI prompts and archive them to a Feishu folder with category tags. |
 
 ## Installation
