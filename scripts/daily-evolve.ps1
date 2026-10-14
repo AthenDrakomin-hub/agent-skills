@@ -15,10 +15,15 @@ $LocalSkillRoots = @(
     "C:\Users\88903\.agents\skills"
 )
 
-# Quality thresholds
+# Quality thresholds (raised to avoid thin/duplicate skills)
 $MaxLines = 500
-$MinDescLength = 100
+$MinLines = 80
+$MinDescLength = 150
 $NamePattern = '^[a-z][a-z0-9-]*[a-z0-9]$'
+$TriggerPattern = 'use when|triggers?|触发|适用于|Use when'
+
+# Known duplicates of skills already in repo (skip these)
+$DuplicateBlacklist = @('vibecoding-gsap-ad', 'gsap广告大片复刻', 'uniapp-multi-platform-audit', 'uni-app多端体验审计', 'github技术优化顾问', 'ios界面审计开发', 'web设计规范审查', '截图转前端代码', '设计审美前端', 'uni-app发版查询')
 
 # === Logging ===
 function Write-Log {
@@ -58,8 +63,10 @@ function Test-SkillQuality {
 
     if (-not $name) { return @{ Pass = $false; Reason = "Missing name in frontmatter" } }
     if ($name -notmatch $NamePattern) { return @{ Pass = $false; Reason = "Name '$name' not lowercase-hyphen format" } }
+    if ($lines -lt $MinLines) { return @{ Pass = $false; Reason = "Too thin: $lines lines (min $MinLines)" } }
     if ($lines -gt $MaxLines) { return @{ Pass = $false; Reason = "$lines lines exceeds $MaxLines" } }
     if (-not $desc -or $desc.Length -lt $MinDescLength) { return @{ Pass = $false; Reason = "Description too short ($($desc.Length) chars, need $MinDescLength)" } }
+    if ($desc -notmatch $TriggerPattern) { return @{ Pass = $false; Reason = "Description missing trigger keywords (use when/触发/适用于)" } }
     if ($content -match 'C:\\Users\\|/Users/[a-z]+/|/home/[a-z]+/') { return @{ Pass = $false; Reason = "Contains hardcoded local path" } }
 
     return @{ Pass = $true; Reason = "OK"; Name = $name; Lines = $lines; DescLen = $desc.Length }
@@ -91,6 +98,7 @@ foreach ($root in $LocalSkillRoots) {
         $fm = Get-Frontmatter $md
         if (-not $fm.name) { return }
         if ($existing.ContainsKey($fm.name)) { return }  # already in repo
+        if ($DuplicateBlacklist -contains $fm.name -or $DuplicateBlacklist -contains $_.Name) { return }  # known duplicate
         $quality = Test-SkillQuality $skillDir
         if ($quality.Pass) {
             $candidates += [PSCustomObject]@{ Name = $fm.name; Source = $skillDir; Lines = $quality.Lines }

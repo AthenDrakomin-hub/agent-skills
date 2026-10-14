@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (13)
+## Skills (18)
 
 ### Development & Engineering
 
@@ -14,6 +14,7 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | [github-tech-optimizer](./skills/github-tech-optimizer/SKILL.md) | Scan project tech stack, research free/open-source alternatives, enforce visual demo walkthrough, output executable optimization plans with cleanup. |
 | [git-safety-guard](./skills/git-safety-guard/SKILL.md) | Pre-commit secret scanning, .gitignore audit, and pull-modify-commit-push workflow enforcement. |
 | [rea-reverse-engineering](./skills/rea-reverse-engineering/SKILL.md) | AI-assisted reverse engineering via REA toolchain. Analyze binaries, APKs, Electron apps, .NET assemblies, and websites to produce evidence-based analysis and functional-equivalent reimplementation. |
+| [using-coze-cli](./skills/using-coze-cli/SKILL.md) | Coze CLI multi-module usage guide covering agent collaboration, code generation, file operations, and content creation workflows. |
 
 ### UI/UX & Mobile
 
@@ -29,13 +30,17 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 |---|---|
 | [boxim-release-assistant](./skills/boxim-release-assistant/SKILL.md) | Build, deploy, health-check, and roll back the boxim IM system across 3 frontends and 3 Java backend services. |
 
-### Content & Automation
+### Content & Marketing
 
 | Skill | Description |
 |---|---|
 | [wechat-article-html](./skills/wechat-article-html/SKILL.md) | Convert Markdown into WeChat Official Account compatible inline-style HTML. 15 built-in themes, strict paste-compatibility rules (no style tags/classes, all styles inline). |
 | [ai-writing-detector](./skills/ai-writing-detector/SKILL.md) | Scan text for 22 AI writing patterns and produce per-location detection reports. Diagnosis-only by default, no rewriting. |
 | [douyin-to-feishu-archiver](./skills/douyin-to-feishu-archiver/SKILL.md) | Parse Douyin video links into reusable AI prompts and archive them to a Feishu folder with category tags. |
+| [ad-creative](./skills/ad-creative/SKILL.md) | Ad creative generation with headline variations, hook patterns, and platform-specific copy structures. |
+| [copywriting](./skills/copywriting/SKILL.md) | Product copywriting framework: positioning, value propositions, personas, feature-to-benefit conversion, and multi-length product descriptions. |
+| [cro](./skills/cro/SKILL.md) | Conversion rate optimization: landing page structure, hero copy, pain points, social proof, pricing anchoring, and CTA design. |
+| [social](./skills/social/SKILL.md) | Social media content package generation across platforms with post variations, hashtags, and engagement hooks. |
 
 ## Installation
 
