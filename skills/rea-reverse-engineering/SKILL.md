@@ -1,6 +1,14 @@
 ---
 name: rea-reverse-engineering
-description: 基于 REA (Reverse Engineer Anything) 的 AI 逆向工程分析 Skill。当用户需要分析无源码的二进制程序、APK、Electron 应用、.NET 程序集、网站或固件，理解其功能实现、审计旧代码或重建行为逻辑时使用。通过 MCP/CLI 编排 Ghidra/IDA/Hopper/JADX/Binwalk 等工具，产出带证据链的结构化分析报告。不用于破解、脱壳或绕过授权。
+description: "AI-assisted reverse engineering via REA (Reverse Engineer Anything) MCP Server + CLI (115K+ GitHub stars). Analyze binaries, APKs, Electron apps, .NET assemblies, websites, and network captures to produce evidence-based analysis and functional-equivalent reimplementation. REA orchestrates Hopper/Ghidra/JADX/Binwalk and exposes them to Claude Code, Codex, Cursor, and 17+ AI agents. Use when: reverse engineer app, analyze binary, understand closed-source software, audit legacy code, reconstruct behavior, 逆向工程, 二进制分析, APK反编译, 无源码分析. Not for cracking, unpacking, or bypassing licensing/DRM."
+license: MIT
+compatibility: Requires Node.js >= 22.19, REA MCP server (npx rea-agents@latest setup). Optional: Hopper (macOS), Ghidra (cross-platform), JADX (Android), Binwalk (firmware).
+metadata:
+  author: morluto (curated by AthenDrakomin-hub)
+  version: "2.0.0"
+  category: development
+  source: "https://github.com/morluto/rea"
+  stars: "115K+"
 ---
 
 # rea-reverse-engineering
