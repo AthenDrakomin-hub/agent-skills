@@ -2,7 +2,7 @@
 name: rea-reverse-engineering
 description: "AI-assisted reverse engineering via REA (Reverse Engineer Anything) MCP Server + CLI (115K+ GitHub stars). Analyze binaries, APKs, Electron apps, .NET assemblies, websites, and network captures to produce evidence-based analysis and functional-equivalent reimplementation. REA orchestrates Hopper/Ghidra/JADX/Binwalk and exposes them to Claude Code, Codex, Cursor, and 17+ AI agents. Use when: reverse engineer app, analyze binary, understand closed-source software, audit legacy code, reconstruct behavior, 逆向工程, 二进制分析, APK反编译, 无源码分析. Not for cracking, unpacking, or bypassing licensing/DRM."
 license: MIT
-compatibility: Requires Node.js >= 22.19, REA MCP server (npx rea-agents@latest setup). Optional: Hopper (macOS), Ghidra (cross-platform), JADX (Android), Binwalk (firmware).
+compatibility: "Requires Node.js >= 22.19, REA MCP server (npx rea-agents@latest setup). Optional: Hopper (macOS), Ghidra (cross-platform), JADX (Android), Binwalk (firmware)."
 metadata:
   author: morluto (curated by AthenDrakomin-hub)
   version: "2.0.0"

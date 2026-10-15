@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (31)
+## Skills (32)
 
 ### Development & Engineering
 

@@ -2,7 +2,7 @@
 name: voice-studio
 description: "Open-source, fully-local ElevenLabs alternative. Voice cloning, voice design, video dubbing, dictation, transcription, and audiobook creation in 646 languages. Use when the user wants to clone a voice locally, dub videos, create audiobooks, transcribe audio, or needs a privacy-first TTS/STT solution. Triggers on: voice cloning, ElevenLabs alternative, local TTS, audiobook, dubbing, transcription, 语音克隆, 配音, 有声书, 本地语音."
 license: AGPL-3.0
-compatibility: Windows, macOS, Linux. Requires bun runtime for source build, or pre-built installers. Python backend. Optional: NVIDIA GPU for faster inference.
+compatibility: "Windows, macOS, Linux. Requires bun runtime for source build, or pre-built installers. Python backend. Optional: NVIDIA GPU for faster inference."
 metadata:
   author: debpalash (curated by AthenDrakomin-hub)
   version: "1.0.0"
