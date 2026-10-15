@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (26)
+## Skills (31)
 
 ### Development & Engineering
 
@@ -18,6 +18,8 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | [rea-reverse-engineering](./skills/rea-reverse-engineering/SKILL.md) | AI-assisted reverse engineering via REA MCP Server (115K stars). Orchestrates Hopper/Ghidra/JADX/Binwalk for binaries, APKs, Electron apps, .NET assemblies, websites. Evidence-based analysis + functional-equivalent reimplementation. |
 | [context-mode](./skills/context-mode/SKILL.md) | MCP server that optimizes AI coding context windows. Sandbox execution + FTS5 indexing reduces context consumption by 98%. Session continuity across compaction. Think-in-code paradigm. |
 | [skills-cli](./skills/skills-cli/SKILL.md) | Vercel Labs open-source CLI for agent skills ecosystem. Install/discover/update/share skills across 80+ AI coding agents. `npx skills add/find/update/validate`. |
+| [code-quality-review](./skills/code-quality-review/SKILL.md) | Read-only review of structural or abstraction changes for consequential maintainability risks. Flags architectural debt, over-abstraction, and hidden coupling in large diffs. |
+| [perfection-loop](./skills/perfection-loop/SKILL.md) | Relentless verify-and-fix loop that proves work is actually finished. Sends adversarial judge sub-agents to inspect defects, fixes them, and repeats until zero issues remain. |
 | [airllm](./skills/airllm/SKILL.md) | Run 70B+ LLMs on single 4GB GPU via layer-by-layer loading. No quantization, full precision. Drop-in transformers replacement. ~20s/token for 70B on 4GB. |
 | [xtool](./skills/xtool/SKILL.md) | Cross-platform Xcode alternative. Build/test/deploy iOS apps from Linux/Windows/macOS via SwiftPM. No Mac required for compilation. CI/CD friendly. |
 | [using-coze-cli](./skills/using-coze-cli/SKILL.md) | Coze CLI multi-module usage guide covering agent collaboration, code generation, file operations, and content creation workflows. |
@@ -40,6 +42,8 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | Skill | Description |
 |---|---|
 | [ios-ui-ux-dev](./skills/ios-ui-ux-dev/SKILL.md) | Multi-channel iOS UI/UX audit: screenshot walkthrough, native source audit, H5/WKWebView audit, IPA unpacking. Covers safe-area, Auto Layout, Dynamic Type, WKWebView rendering bugs, iOS 26 Liquid Glass. |
+| [design-taste-frontend](./skills/design-taste-frontend/SKILL.md) | Anti-slop frontend skill distilled from 247 curated gallery sites. Enforces a strict no-slop house style with real-browser inspector and look-and-fix loop on screenshots. For landing pages, marketing sites, portfolios, and public-facing web pages. |
+| [mobile-app-ui-design](./skills/mobile-app-ui-design/SKILL.md) | Design high-quality mobile app UI/UX screens, flows, and components. Covers app mockups, onboarding flows, mobile navigation, and React Native/Flutter/SwiftUI style visual prototypes. |
 | [uniapp-multi-platform-audit](./skills/uniapp-multi-platform-audit/SKILL.md) | uni-app iOS/Android/H5 three-platform UI/UX audit. Code-scan for layout issues, platform-specific styling, IM and game专项 checklists, with direct code fixes. |
 | [uniapp-release-notes](./skills/uniapp-release-notes/SKILL.md) | Query HBuilder X / uni-app / uni-app x changelog for version selection, API compatibility, new features, and known-bug avoidance. Offline snapshot of 33 versions with Python query script. |
 
@@ -48,6 +52,7 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | Skill | Description |
 |---|---|
 | [boxim-release-assistant](./skills/boxim-release-assistant/SKILL.md) | Build, deploy, health-check, and roll back the boxim IM system across 3 frontends and 3 Java backend services. |
+| [site-launch-checklist](./skills/site-launch-checklist/SKILL.md) | Pre-launch checklist for shipping a new website or web app. Covers analytics, DNS, TLS, backups, legal/GDPR compliance, security headers, SEO/GEO, Lighthouse, Core Web Vitals, and WCAG quality gates. |
 
 ### Content & Marketing
 
@@ -107,6 +112,11 @@ agent-skills/
 │   ├── rea-reverse-engineering/  # REA-based reverse engineering
 │   ├── git-safety-guard/         # Pre-commit secret scanning
 │   ├── boxim-release-assistant/  # boxim deployment & rollback
+│   ├── site-launch-checklist/    # Pre-launch production checklist
+│   ├── code-quality-review/      # Structural change maintainability review
+│   ├── perfection-loop/          # Verify-and-fix iteration loop
+│   ├── design-taste-frontend/    # Anti-slop frontend art direction
+│   └── mobile-app-ui-design/     # Mobile app UI/UX design standards
 │   └── douyin-to-feishu-archiver/ # Douyin video → Feishu archive
 ├── LICENSE
 └── README.md
