@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (33)
+## Skills (34)
 
 ### Development & Engineering
 
@@ -21,6 +21,7 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | [code-quality-review](./skills/code-quality-review/SKILL.md) | Read-only review of structural or abstraction changes for consequential maintainability risks. Flags architectural debt, over-abstraction, and hidden coupling in large diffs. |
 | [perfection-loop](./skills/perfection-loop/SKILL.md) | Relentless verify-and-fix loop that proves work is actually finished. Sends adversarial judge sub-agents to inspect defects, fixes them, and repeats until zero issues remain. |
 | [project-finishing-workflow](./skills/project-finishing-workflow/SKILL.md) | AI编程项目收尾工作流。5步闭环：盘点优先级→缺口清单（只找不改）→逐个修复（全绿才停）→独立验收→交付归档。防早停规则，禁止"应该可以了"，每个bug必须写复现测试。 |
+| [conversational-ai-dev-workflow](./skills/conversational-ai-dev-workflow/SKILL.md) | 用豆包/Grok等对话式AI从零开发项目。5阶段：项目骨架→搭骨架代码→逐个模块开发→收尾验收→独立验收。每个阶段开新对话，手动本地验证循环。7个通用提示词技巧。 |
 | [airllm](./skills/airllm/SKILL.md) | Run 70B+ LLMs on single 4GB GPU via layer-by-layer loading. No quantization, full precision. Drop-in transformers replacement. ~20s/token for 70B on 4GB. |
 | [xtool](./skills/xtool/SKILL.md) | Cross-platform Xcode alternative. Build/test/deploy iOS apps from Linux/Windows/macOS via SwiftPM. No Mac required for compilation. CI/CD friendly. |
 | [using-coze-cli](./skills/using-coze-cli/SKILL.md) | Coze CLI multi-module usage guide covering agent collaboration, code generation, file operations, and content creation workflows. |
