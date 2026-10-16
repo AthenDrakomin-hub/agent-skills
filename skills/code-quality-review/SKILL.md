@@ -1,6 +1,6 @@
 ---
 name: code-quality-review
-description: Review substantial structural or abstraction changes read-only for consequential maintainability risks. Not routine polish, a second correctness pass, or surrounding-code cleanup.
+description: "Review substantial structural or abstraction changes read-only for consequential maintainability risks. Not routine polish, a second correctness pass, or surrounding-code cleanup. 只读审查重大结构或抽象变更中的可维护性风险。不适用于常规润色、二次正确性检查或周边代码清理。触发词：代码质量审查, 架构审查, 可维护性, 代码评审, 结构变更审查, 抽象设计审查."
 ---
 
 # Code Quality Review

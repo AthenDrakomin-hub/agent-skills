@@ -1,6 +1,6 @@
 ---
 name: mobile-app-ui-design
-description: Design high-quality mobile app UI/UX screens, flows, and components. Use this skill whenever the user asks to design a mobile app screen, create app mockups, build mobile UI components, improve an existing mobile app design, create onboarding flows, design mobile navigation, or requests any mobile-first interface work. Also trigger when the user mentions app design, mobile UI, mobile UX, screen design, app mockups, wireframes, or wants to build React Native / Flutter / SwiftUI style interfaces as visual prototypes. Even if the user just says "design an app" or "make this screen look better", use this skill.
+description: "Design high-quality mobile app UI/UX screens, flows, and components. Use this skill whenever the user asks to design a mobile app screen, create app mockups, build mobile UI components, improve an existing mobile app design, create onboarding flows, design mobile navigation, or requests any mobile-first interface work. Also trigger when the user mentions app design, mobile UI, mobile UX, screen design, app mockups, wireframes, or wants to build React Native / Flutter / SwiftUI style interfaces as visual prototypes. Even if the user just says 'design an app' or 'make this screen look better', use this skill. 设计高质量移动应用UI/UX界面、流程和组件。适用于App界面设计、原型、组件、引导流程、导航设计。触发词：App设计, 移动UI, 移动端设计, App原型, 界面设计, 引导页设计, 移动导航, React Native设计, Flutter设计."
 ---
 
 # Mobile App UI/UX Design Skill
