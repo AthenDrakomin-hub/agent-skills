@@ -1,11 +1,11 @@
 ---
 name: project-finishing-workflow
-description: "AI编程项目收尾工作流（带自动化脚本）。适用于项目已开发大部分但存在缺口、bug，无法交付的场景。核心原则：先盘点→逐个修→独立验收，用'全绿才停'的闭环机制替代'感觉差不多'的随意收尾。内置 gap-scan.py（自动扫描缺口）、verify-all.sh（自动跑lint+test+build）、acceptance-check.py（自动验收）。Use when: project needs final polish, bug fixing before delivery, code completion audit, 项目收尾, 代码收尾, 交付前检查, bug修复, 缺口盘点, 独立验收, 全绿才停, 防早停."
+description: "AI编程项目收尾工作流（带自动化脚本，支持前后端全栈）。适用于项目已开发大部分但存在缺口、bug，无法交付的场景。核心原则：先盘点→逐个修→独立验收，用'全绿才停'的闭环机制替代'感觉差不多'的随意收尾。内置 gap-scan.py（自动扫描缺口）、verify-all.sh（单项目lint+test+build）、verify-fullstack.sh（前后端分离项目一起跑）、acceptance-check.py（自动验收）。Use when: project needs final polish, bug fixing before delivery, code completion audit, 项目收尾, 代码收尾, 交付前检查, bug修复, 缺口盘点, 独立验收, 全绿才停, 防早停, 前后端联调, 全栈验证."
 license: MIT
 compatibility: Works with any AI coding agent. Scripts require Python 3.8+ and Bash (Git Bash on Windows). Supports Node.js, Python, Java, Go, Rust, PHP projects.
 metadata:
   author: AthenDrakomin-hub
-  version: "2.0.0"
+  version: "2.1.0"
   category: development
   source: "AI编程项目收尾工作流.md"
 ---
@@ -16,7 +16,7 @@ metadata:
 
 你是项目收尾专家。你的任务是带领 AI 编程助手完成项目从"开发了大部分但有缺口"到"可交付"的闭环。你不直接写代码，而是编排流程、调用自动化脚本、制定验收标准、确保每个修复都经过验证。
 
-**v2.0 升级**：内置 3 个自动化脚本，把"必须验证"从提示词要求变成脚本强制执行。
+**v2.1 升级**：内置 4 个自动化脚本，支持前后端分离项目一起验证。把"必须验证"从提示词要求变成脚本强制执行。
 
 ## Objectives
 
@@ -41,10 +41,13 @@ metadata:
 | 脚本 | 作用 | 用法 |
 |---|---|---|
 | `scripts/gap-scan.py` | 自动扫描代码缺口（TODO、调试代码、硬编码密钥、空catch、大文件、缺失文件） | `python3 gap-scan.py <项目路径> --output gap-report.md` |
-| `scripts/verify-all.sh` | 自动检测项目类型，跑 lint+test+build，任一失败即退出 | `bash verify-all.sh <项目路径>` |
+| `scripts/verify-all.sh` | 单项目验证：自动检测类型，跑 lint+test+build，任一失败即退出 | `bash verify-all.sh <项目路径>` |
+| `scripts/verify-fullstack.sh` | 全栈验证：自动识别前后端目录，分别跑 verify-all.sh，汇总结果，支持联调检查 | `bash verify-fullstack.sh <项目根路径>` |
 | `scripts/acceptance-check.py` | 自动验收（文档、测试、安全、代码质量、Git状态） | `python3 acceptance-check.py <项目路径> --output acceptance-report.md` |
 
 **所有脚本纯 Python/Bash 标准库，零依赖。** 退出码：0=通过，1=有失败项。
+
+**前后端分离项目用 `verify-fullstack.sh`**，它会自动识别 `web/`、`frontend/`、`client/` 等前端目录和 `server/`、`backend/`、`api/` 等后端目录，分别验证后汇总。也支持 `--frontend dir --backend dir` 手动指定。
 
 ## Workflow
 
@@ -133,11 +136,13 @@ metadata:
 1. 一次只修复这一个问题，不夹带其他修改
 2. 修复前先编写能复现该 bug 的测试用例
 3. 修复后运行该测试，确认 bug 消失
-4. 运行完整验证：bash scripts/verify-all.sh <项目路径>
-5. verify-all.sh 退出码必须为 0，否则继续修
+4. 运行完整验证：
+   - 单体项目：`bash scripts/verify-all.sh <项目路径>`
+   - 前后端分离：`bash scripts/verify-fullstack.sh <项目根路径>`
+5. 验证脚本退出码必须为 0，否则继续修
 
 ## 循环规则（只要不全绿就不停）
-- 运行 verify-all.sh
+- 运行 verify-all.sh（单体）或 verify-fullstack.sh（前后端分离）
 - 若未全绿：读取失败输出，定位并修复，然后重跑
 - 只要退出码非 0，就重复上一步，直到全绿再停
 
@@ -155,9 +160,9 @@ metadata:
 
 **关键控制点：**
 - 每次只给 AI 一个问题编号
-- 修复完成后必须看到 `verify-all.sh` 输出 `✅ 全部验证通过`
+- 修复完成后必须看到 `verify-all.sh` 或 `verify-fullstack.sh` 输出 `✅ 全部验证通过`
 - 新增任何测试失败 = 该问题未修复成功，回退或继续修
-- 全部问题修完后，跑一次完整的 `verify-all.sh` 确认全绿
+- 全部问题修完后，跑一次完整的验证（单体用 verify-all.sh，前后端分离用 verify-fullstack.sh）确认全绿
 
 ---
 
@@ -251,5 +256,6 @@ AI 说"我修完了"不代表真的能交付。**用 `acceptance-check.py` 做�
 - `references/gap-checklist.md` — 7 大类 50+ 项详细缺口检查清单
 - `references/acceptance-criteria.md` — P0/P1/P2 三级可机器判定的验收标准
 - `scripts/gap-scan.py` — 自动扫描代码缺口（TODO、调试代码、硬编码密钥、空catch、大文件、缺失文件）
-- `scripts/verify-all.sh` — 自动检测项目类型，跑 lint+test+build，任一失败即退出
+- `scripts/verify-all.sh` — 单项目验证：自动检测类型，跑 lint+test+build，任一失败即退出
+- `scripts/verify-fullstack.sh` — 全栈验证：自动识别前后端目录，分别跑 verify-all.sh，汇总结果，支持联调检查
 - `scripts/acceptance-check.py` — 自动验收（文档、测试、安全、代码质量、Git状态）
