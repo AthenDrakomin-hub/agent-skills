@@ -1,155 +1,135 @@
 ---
 name: context-mode
-description: "MCP server that optimizes AI coding assistant context windows by sandboxing tool execution and FTS5-indexing large outputs, reducing context consumption by up to 98%. Use when the user wants to reduce AI agent token usage, prevent context window overflow, optimize Claude Code/Cursor/Codex sessions, implement think-in-code paradigm, or needs session continuity across compaction. Triggers on: context optimization, 上下文优化, save tokens, context window, think-in-code, session continuity, MCP server, 省token."
+description: "AI 编程上下文优化（带分析脚本）。context-analyzer.py 自动扫描项目上下文体积，估算 token 消耗，识别大文件，给出瘦身建议和 think-in-code 模式。配合 Context Mode MCP server 使用，可减少 98% 上下文消耗。Use when: context optimization, 上下文优化, save tokens, context window, think-in-code, session continuity, 省token, 上下文溢出, 大文件处理, AI编程效率."
 license: MIT
-compatibility: Requires Node.js >= 18. Works with Claude Code, Cursor, Codex CLI, Gemini CLI, VS Code Copilot, OpenCode. MCP protocol.
+compatibility: Scripts require Python 3.8+. MCP server requires Node.js >= 18. Works with Claude Code, Cursor, Codex CLI, Gemini CLI, VS Code Copilot, OpenCode.
 metadata:
   author: mksglu (curated by AthenDrakomin-hub)
-  version: "1.0.0"
+  version: "2.0.0"
   category: development
   source: "https://github.com/mksglu/context-mode"
 ---
 
-# Context Mode
-
-Optimize AI coding assistant context windows. Sandbox tool execution, FTS5-index large outputs, and maintain session continuity across compaction. Reduces context consumption by up to 98%.
+# Context Mode v2.0
 
 ## Role
 
-You are a context optimization specialist. Your job is to help users install, configure, and use Context Mode MCP server to keep their AI coding sessions efficient and prevent context window overflow.
+上下文优化专家。帮助 AI 编程助手避免上下文溢出，实践 "think-in-code" 模式，用脚本处理数据而不是 Read 整个文件。
 
-## What It Solves
+**v2.0 升级**：内置 `context-analyzer.py` 自动分析项目上下文体积。
 
-A Playwright snapshot costs 56 KB. Twenty GitHub issues cost 59 KB. One access log — 45 KB. After 30 minutes, 40% of context is gone. Context Mode sits between the AI agent and these outputs: 315 KB becomes 5.4 KB.
+## 内置脚本
 
-## Core Capabilities
+| 脚本 | 作用 | 用法 |
+|---|---|---|
+| `scripts/context-analyzer.py` | 扫描项目上下文体积，估算 token，识别大文件，给出瘦身建议 | `python3 context-analyzer.py <项目路径>` |
 
-### 1. Sandbox Execution (Think-in-Code)
+**纯 Python 标准库，零依赖。**
 
-Instead of reading raw data into context, the AI writes small scripts that execute in a sandbox and return only concise results.
-
-- 11 runtimes: JavaScript, TypeScript, Python, Shell, Ruby, Go, Rust, PHP, Perl, R, Elixir
-- Authenticated CLI passthrough: `gh`, `aws`, `gcloud`, `kubectl`, `docker` inherit credentials without exposing them to context
-- Output > 5 KB with an intent → auto-indexes into FTS5 and returns only matching sections
-
-### 2. Session Continuity (Compaction Recovery)
-
-- Every file edit, git operation, task, error, and user decision tracked in SQLite
-- Before compaction: builds resume snapshot
-- After compaction: SessionStart hook injects critical state into new session
-- Priority layers: active files, tasks, decisions never dropped
-
-### 3. FTS5 Knowledge Base
-
-- Large outputs auto-indexed into full-text search
-- Agent queries only relevant sections instead of loading entire files
-- Supports incremental indexing as new data arrives
-
-## Installation
+## 快速使用
 
 ```bash
-# Option 1: npx (simplest)
+# 分析项目上下文
+python3 scripts/context-analyzer.py ./my-project
+
+# 显示最大的20个文件
+python3 scripts/context-analyzer.py ./my-project --top 20
+
+# 输出到文件
+python3 scripts/context-analyzer.py ./my-project --output context-report.md
+
+# JSON 格式（CI 集成）
+python3 scripts/context-analyzer.py ./my-project --json
+```
+
+## 它解决什么问题
+
+一个 Playwright 快照 56KB，20 个 GitHub issue 59KB，一条访问日志 45KB。30 分钟后 40% 上下文就没了。
+
+Context Mode 坐在 AI Agent 和这些输出之间：315KB 变成 5.4KB（减少 98%）。
+
+## context-analyzer.py 检测内容
+
+| 检测项 | 说明 |
+|---|---|
+| 总 Token 估算 | 按 3 字符/token 估算全部代码文件的上下文消耗 |
+| 风险等级 | low/medium/high/critical 四级评估 |
+| 大文件识别 | >300 行标记警告，>800 行标记不应直接 Read |
+| Top 文件排行 | 按 token 消耗排序，找出最占空间的文件 |
+| 按类型统计 | 各扩展名的文件数、行数、token 占比 |
+| 瘦身建议 | 针对项目情况给出具体的上下文优化建议 |
+
+## 风险等级
+
+| 等级 | 总 Token | 含义 |
+|---|---|---|
+| 🟢 LOW | <20K | 可以自由读取 |
+| 🟡 MEDIUM | 20K-50K | 需要选择性读取 |
+| 🟠 HIGH | 50K-100K | 上下文压力大，必须用脚本处理 |
+| 🔴 CRITICAL | >100K | 单次 Read 全部会溢出，必须 think-in-code |
+
+## Think-in-Code 模式
+
+核心原则：**不 Read 原始数据，写小脚本执行，只返回精简结果。**
+
+```bash
+# ❌ 不要这样：Read 整个 500 行日志
+# Read /var/log/app.log  → 50KB / 16K tokens
+
+# ✅ 应该这样：用脚本定向提取
+grep ERROR /var/log/app.log | tail -20  → 2KB / 600 tokens
+
+# ❌ 不要这样：Read 整个配置
+# Read config.yaml  → 10KB / 3K tokens
+
+# ✅ 应该这样：提取需要的部分
+grep -A5 'database:' config.yaml  → 500B / 150 tokens
+```
+
+## Context Mode MCP Server（可选增强）
+
+如果需要更强大的上下文管理，可以安装 MCP server：
+
+```bash
+# npx 方式（最简单）
 npx -y @mksglu/context-mode@latest
 
-# Option 2: npm global
-npm install -g @mksglu/context-mode
-
-# Option 3: MCP config (Claude Code)
-# Add to ~/.claude.json mcpServers:
+# Claude Code 配置
+# 在 ~/.claude.json 的 mcpServers 中添加：
 # "context-mode": {
 #   "command": "npx",
 #   "args": ["-y", "@mksglu/context-mode@latest"]
 # }
 ```
 
-## Configuration
+### MCP 工具
 
-### Claude Code
-
-Edit `~/.claude.json` or use the UI:
-
-```json
-{
-  "mcpServers": {
-    "context-mode": {
-      "command": "npx",
-      "args": ["-y", "@mksglu/context-mode@latest"],
-      "env": {
-        "CONTEXT_MODE_DB": "~/.context-mode/session.db",
-        "CONTEXT_MODE_MAX_OUTPUT": "5120"
-      }
-    }
-  }
-}
-```
-
-### Cursor
-
-Settings → MCP → Add new MCP server:
-
-```json
-{
-  "mcpServers": {
-    "context-mode": {
-      "command": "npx",
-      "args": ["-y", "@mksglu/context-mode@latest"]
-    }
-  }
-}
-```
-
-## Usage Workflow
-
-### Think-in-Code Pattern
-
-Instead of:
-```
-Read entire 500-line log file → analyze in context
-```
-
-Use:
-```
-ctx_execute("grep ERROR /var/log/app.log | tail -20")
-→ returns only matching lines (2 KB instead of 50 KB)
-```
-
-### Session Recovery
-
-After compaction, Context Mode automatically injects:
-1. Active files and their last-known state
-2. Pending tasks and decisions
-3. Recent errors and their context
-4. Git branch and uncommitted changes
-
-## Key Tools
-
-| Tool | Purpose |
+| 工具 | 作用 |
 |---|---|
-| `ctx_execute` | Run script in sandbox, return concise result |
-| `ctx_index` | Index large output into FTS5 |
-| `ctx_search` | Search indexed content, return matching sections |
-| `ctx_snapshot` | Build resume snapshot before compaction |
-| `ctx_restore` | Restore session state after compaction |
+| `ctx_execute` | 在沙箱中运行脚本，返回精简结果 |
+| `ctx_index` | 将大输出索引到 FTS5 全文搜索 |
+| `ctx_search` | 搜索索引内容，只返回匹配段落 |
+| `ctx_snapshot` | 压缩前构建恢复快照 |
+| `ctx_restore` | 压缩后恢复会话状态 |
 
-## Best Practices
+## 最佳实践
 
-1. **Always use ctx_execute for data exploration** — never Read large files directly
-2. **Index before searching** — run ctx_index on large outputs, then ctx_search
-3. **Snapshot before long operations** — call ctx_snapshot before potentially context-heavy tasks
-4. **Keep scripts under 200 bytes** — think-in-code works best with tiny targeted scripts
-5. **Don't mix raw reads with sandbox** — consistency matters for context budget
+1. **先用 context-analyzer.py 扫描**，了解项目上下文体积
+2. **大文件用 grep/脚本定向读取**，不要 Read 整个文件
+3. **数据探索用脚本**，把结果控制在 5KB 以内
+4. **输出 >5KB 时先索引再搜索**，不要全部加载
+5. **长操作前做快照**，防止上下文压缩后丢失状态
+6. **保持脚本 <200 字节**，think-in-code 用小而精准的脚本
 
-## Troubleshooting
+## 工作流
 
-| Problem | Solution |
-|---|---|
-| MCP server not connecting | Check Node.js >= 18, try `npx @mksglu/context-mode --health` |
-| Output still too large | Lower `CONTEXT_MODE_MAX_OUTPUT` env var |
-| Session not restoring | Verify SQLite DB path is writable, check `ctx_snapshot` was called |
-| Auth not working | Ensure CLI tools (gh/aws/etc) are authenticated in the shell |
+1. 新项目开始时运行 `context-analyzer.py`，了解上下文基线
+2. 遇到大文件时，先 grep 定位，再 Read 特定行范围
+3. 需要分析大量数据时，写脚本处理而不是 Read 全部
+4. 定期重新扫描，监控上下文体积变化
+5. 如果安装了 MCP server，用 `ctx_execute` 替代直接 Read
 
 ## References
 
-- Official site: https://context-mode.mksg.lu/
-- GitHub: https://github.com/mksglu/context-mode
-- Blog: https://mksg.lu/blog/context-mode
+- `scripts/context-analyzer.py` — 上下文体积分析器（token估算、大文件识别、瘦身建议）
+- 官方 MCP: https://github.com/mksglu/context-mode
