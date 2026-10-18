@@ -19,7 +19,10 @@ $sourcePaths = @()
 Get-Content $Pending | ForEach-Object {
     $line = $_
     if ($line -match '^\|\s*[^|]+\s*\|' -and $line -notmatch '^\|\s*(Name|---)') {
-        $cells = $line.Trim().Trim('|') -split '|' | ForEach-Object { $_.Trim() }
+        # -split takes a REGEX: bare '|' means "empty-or-empty" and shreds the
+        # line into single characters, so $cells[-1] never matches a path.
+        # Escaped '\|' splits on the literal pipe. (Reported on PS 5.1.)
+        $cells = $line.Trim().Trim('|') -split '\|' | ForEach-Object { $_.Trim() }
         $last = $cells[-1]
         if ($last -and ($last -match '^[A-Za-z]:\\' -or $last -match '^/')) { $sourcePaths += $last }
     }
