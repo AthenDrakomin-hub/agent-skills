@@ -91,7 +91,7 @@ dbskill 现有的 13 个诊断 skill，每次对话都是冷启动。用户上�
 {
   "version": 1,
   "mode": "custom",
-  "root": "/Users/name/Library/Mobile Documents/com~apple~CloudDocs/dbs-archive"
+  "root": "/Users/<user>/Library/Mobile Documents/com~apple~CloudDocs/dbs-archive"
 }
 ```
 

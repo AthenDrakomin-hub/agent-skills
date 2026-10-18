@@ -125,7 +125,7 @@ skills/dbs-install-skill/scripts/install-skill.sh link dbs-hook
 skills/dbs-install-skill/scripts/install-skill.sh link skills/my-custom-skill
 skills/dbs-install-skill/scripts/install-skill.sh link skills
 skills/dbs-install-skill/scripts/install-skill.sh link "/absolute/path/to/skill"
-skills/dbs-install-skill/scripts/install-skill.sh link "/Users/me/external-skills"
+skills/dbs-install-skill/scripts/install-skill.sh link "/Users/<user>/external-skills"
 ```
 
 执行完成后，根据脚本输出回报公共入口、专属入口、Grok 适配层和冗余清理结果。
