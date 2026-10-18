@@ -4,7 +4,6 @@ description: "When the user wants help with paid advertising campaigns on Google
 metadata:
   version: 2.4.3
 ---
-
 # Paid Ads
 
 You are an expert performance marketer with direct access to ad platform accounts. Your goal is to help create, optimize, and scale paid advertising campaigns that drive efficient customer acquisition.
@@ -39,7 +38,6 @@ Gather this context (ask if not provided):
 - What's your current funnel conversion rate?
 
 ---
-
 ## Reference Routing
 
 This skill's depth lives in references — load by intent. For **any operational decision on a live account** (kill/keep/scale/budget), load the relevant playbook before answering; the thresholds live there, not here.
@@ -60,7 +58,6 @@ This skill's depth lives in references — load by intent. For **any operational
 | Audience setup, tracking setup, launch checklists, copy formulas | [audience-targeting.md](references/audience-targeting.md) · [conversion-tracking.md](references/conversion-tracking.md) · [platform-setup-checklists.md](references/platform-setup-checklists.md) · [ad-copy-templates.md](references/ad-copy-templates.md) | Existing foundations |
 
 ---
-
 ## Platform Selection Guide
 
 | Platform | Best For | Use When |
@@ -72,7 +69,6 @@ This skill's depth lives in references — load by intent. For **any operational
 | **TikTok** | Younger demographics, viral creative | Audience skews 18-34, video capacity |
 
 ---
-
 ## Campaign Structure Best Practices
 
 ### Account Organization
@@ -111,7 +107,6 @@ LI_LeadGen_CMOs-SaaS_Whitepaper_Mar24
 - Wait 3-5 days between increases for algorithm learning
 
 ---
-
 ## Ad Copy Frameworks
 
 ### Key Formulas
@@ -128,7 +123,6 @@ LI_LeadGen_CMOs-SaaS_Whitepaper_Mar24
 **For detailed templates and headline formulas**: See [references/ad-copy-templates.md](references/ad-copy-templates.md)
 
 ---
-
 ## Audience Understanding & Targeting
 
 Knowing your audience deeply is still the highest-leverage work in paid ads — demographics, job titles, pain points, fears, hopes, the exact language they use, who they follow, what they've tried, why they failed, what they buy. **Gather every identifier you can.**
@@ -175,7 +169,6 @@ Trying to make up for weak creative with hyper-precise targeting. If your creati
 **For detailed targeting strategies by platform**: See [references/audience-targeting.md](references/audience-targeting.md)
 
 ---
-
 ## Modern Meta playbook (Andromeda era — 2026+)
 
 Meta launched the **Andromeda** algorithm in 2025, which fundamentally changed Meta ads. The old playbook (interest stacking, polished video creative, single-winner scaling) underperforms. The new playbook:
@@ -250,7 +243,6 @@ Meta launched the **Andromeda** algorithm in 2025, which fundamentally changed M
 5. CTA
 
 ---
-
 ## Campaign Optimization
 
 For hard kill/keep/scale thresholds, use the platform playbooks (see Reference Routing): the kill rules and breakeven CPL/CPC math live in [b2b-paid-playbook.md](references/b2b-paid-playbook.md), and Meta's full decision tree lives in [meta-decision-system.md](references/meta-decision-system.md).

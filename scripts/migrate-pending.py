@@ -114,17 +114,23 @@ def write_pending(md: Path, kept: list[dict]) -> None:
 # slug resolution
 # --------------------------------------------------------------------------
 def resolve_slug(row: dict, slug_map: dict[str, str], fm: dict[str, str]) -> tuple[str | None, str | None]:
-    """Returns (slug, label). slug None => unresolvable."""
+    """Returns (slug, label). label None => no Chinese title to carry.
+    slug None => unresolvable. PENDING's label column uses '-' as a
+    placeholder for 'none', which must normalize to None (a literal
+    `label: -` in frontmatter is a no-op value, not a title)."""
+    raw_label = row.get("label")
+    label = None if raw_label in (None, "", "-") else raw_label
     if row.get("slug") not in (None, "", "-"):
-        return row["slug"], row.get("label") or row["name"]
+        return row["slug"], label
     name = fm.get("name") or row["name"]
     if name in slug_map:
-        return slug_map[name], name
+        # Chinese source name with no explicit label: carry the name itself.
+        return slug_map[name], label or name
     if not CJK.search(name):
         s = re.sub(r"-{2,}", "-", re.sub(r"[ ./_]", "-", name.lower())).strip("-")
         if NAME_RE.fullmatch(s):
-            return s, None
-    return None, name
+            return s, label  # ASCII: no label unless one was given
+    return None, label
 
 
 # --------------------------------------------------------------------------
