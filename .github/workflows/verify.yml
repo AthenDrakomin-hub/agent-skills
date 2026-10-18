@@ -38,6 +38,18 @@ jobs:
               echo "BAD NAME: $name (must be lowercase-hyphen format)"
               FAIL=1
             fi
+            # Option A: optional `label` field carries the human/Chinese title.
+            # If present: must be non-empty and differ from name.
+            label=$(grep -m1 '^label:' "$dir/SKILL.md" 2>/dev/null | sed 's/^label:[[:space:]]*//' | tr -d '"' | tr -d "'")
+            if [ -n "$label" ]; then
+              if [ "$label" = "$name" ]; then
+                echo "BAD LABEL: $folder label equals name ('$name')"
+                FAIL=1
+              fi
+              if ! echo "$label" | grep -qP '[^\x00-\x7F]'; then
+                echo "WARN: $folder label '$label' is pure-ASCII (Chinese label recommended)"
+              fi
+            fi
           done
           exit $FAIL
 
@@ -56,12 +68,29 @@ jobs:
 
       - name: Check for hardcoded local paths
         run: |
-          echo "Scanning for hardcoded local paths..."
-          if grep -rnE 'C:\\\\Users\\\\|/Users/[a-z]+/|/home/[a-z]+/' skills/ --include="*.md" --include="*.py" --include="*.ps1" --include="*.sh"; then
-            echo "Found hardcoded paths!"
+          echo "Scanning repo-wide for hardcoded personal paths..."
+          FAIL=0
+          # Windows personal paths: use a FIXED-STRING match (grep -F) on the
+          # literal 'C:\Users\' prefix — grep -E over-escapes backslashes and
+          # can't see single-backslash paths. The '<user>' doc placeholder is
+          # skipped so example paths don't trip the gate.
+          if grep -rnF 'C:\Users\' skills/ scripts/ .github/ \
+              --include='*.md' --include='*.py' --include='*.ps1' --include='*.sh' \
+              --exclude-dir=.git | grep -vF '<user>'; then
+            echo "Found hardcoded Windows personal paths!"
+            FAIL=1
+          fi
+          # Unix personal paths: /Users/<name>/ or /home/<name>/
+          if grep -rnE '/Users/[a-z0-9]+/|/home/[a-z0-9]+/' skills/ scripts/ .github/ \
+              --include='*.md' --include='*.py' --include='*.ps1' --include='*.sh' \
+              --exclude-dir=.git | grep -vF '<user>'; then
+            echo "Found hardcoded Unix personal paths!"
+            FAIL=1
+          fi
+          if [ "$FAIL" -ne 0 ]; then
             exit 1
           fi
-          echo "No hardcoded paths found."
+          echo "No hardcoded personal paths found."
 
       - name: Verify README lists all skills
         run: |

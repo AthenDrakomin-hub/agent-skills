@@ -1,5 +1,7 @@
 # Dependencies
 node_modules/
+__pycache__/
+*.pyc
 
 # Build output
 dist/
@@ -20,3 +22,8 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Transient exchange dir: PENDING source skills exported on the Windows
+# machine so they can be migrated in a container. Force-add with
+# `git add -f pending-sources/` when you intend to ship a batch.
+pending-sources/
