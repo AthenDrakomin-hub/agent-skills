@@ -9,6 +9,5 @@
 | 小红书标题生成 | xiaohongshu-title-gen | 小红书标题生成 | 728 lines exceeds 500 | C:\Users\88903\AppData\Local\DoubaoWork\User Data\Default\.doubaowork\agent_mode\workspace\.user_skills\小红书标题生成 |
 | 截图转前端代码 | screenshot-to-frontend | 截图转前端代码 | 1229 lines exceeds 500 | C:\Users\88903\AppData\Local\DoubaoWork\User Data\Default\.doubaowork\agent_mode\workspace\.user_skills\截图转前端代码 |
 | 技能库更新 | skills-library-update | 技能库更新 | too thin: 56 lines (min 80) | C:\Users\88903\AppData\Local\DoubaoWork\User Data\Default\.doubaowork\agent_mode\workspace\.user_skills\技能库更新 |
-| 自动诊断分流 | auto-triage | 自动诊断分流 | 503 lines exceeds 500 | C:\Users\88903\AppData\Local\DoubaoWork\User Data\Default\.doubaowork\agent_mode\workspace\.user_skills\自动诊断分流 |
 | 设计审美前端 | design-aesthetic-frontend | 设计审美前端 | 1207 lines exceeds 500 | C:\Users\88903\AppData\Local\DoubaoWork\User Data\Default\.doubaowork\agent_mode\workspace\.user_skills\设计审美前端 |
 | ads | ads | - | 508 lines exceeds 500 | C:\Users\88903\.agents\skills\ads |
