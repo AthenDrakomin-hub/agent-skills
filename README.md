@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (67)
+## Skills (70)
 
 ### Development & Engineering
 
@@ -40,6 +40,7 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | [video-content-extraction](./skills/video-content-extraction/SKILL.md) | 视频内容提取：接收抖音/小红书/视频号等短视频链接或分享文案，查询作品/账号数据并提取语音文字稿，按作者和标题归档为 Markdown。 |
 | [short-video-hook-optimizer](./skills/short-video-hook-optimizer/SKILL.md) | 短视频开头优化：诊断短视频开头的问题并生成优化方案，提高开场吸引力或降低开头流失。 |
 | [short-video-script-check](./skills/short-video-script-check/SKILL.md) | 短视频脚本检查：检查短视频逐字稿的段落衔接、信息密度和口播流畅度，定位观众可能划走的位置。 |
+| [image-to-code](./skills/image-to-code/SKILL.md) | 网站截图/设计图转代码（Codex 专用，image-to-code）。视觉重要任务先生成并深析设计图，再实现。核心 11 章保留主文件，细则 12–38 章见 references。 |
 
 ### Visualization & Data
 
@@ -107,6 +108,8 @@ The dontbesilent (dbs) business-diagnosis family. A diagnostic toolkit for busin
 | [diagnosis-report-gen](./skills/diagnosis-report-gen/SKILL.md) | 诊断报告生成：把多次 dbs-save 存档合并成可交付的 Markdown 报告。 |
 | [diagnosis-state-save](./skills/diagnosis-state-save/SKILL.md) | 诊断状态保存：把当前诊断关键状态存到本地，支持跨会话续接与存档位置管理。 |
 | [diagnosis-state-restore](./skills/diagnosis-state-restore/SKILL.md) | 诊断状态恢复：恢复由 dbs-save 保存的最近诊断状态，接着上次结论继续。 |
+| [content-organization](./skills/content-organization/SKILL.md) | 内容系统整理：把本地文稿、推文、选题、案例和课程稿整理成可持续生长、可重组复用的内容工程。核心流程留主文件，Phase 5–7 细则见 references。 |
+| [xiaohongshu-title-gen](./skills/xiaohongshu-title-gen/SKILL.md) | 小红书标题生成：从 75 个经过验证的小红书标题公式（12 类触发器）中选择并生成合适标题。速查表+流程留主文件，完整公式库见 references。 |
 
 ## Installation
 
