@@ -2,7 +2,7 @@
 
 A collection of reusable AI Agent Skills for daily development, DevOps, and content automation.
 
-## Skills (70)
+## Skills (71)
 
 ### Development & Engineering
 
@@ -16,6 +16,7 @@ A collection of reusable AI Agent Skills for daily development, DevOps, and cont
 | [github-tech-optimizer](./skills/github-tech-optimizer/SKILL.md) | Scan project tech stack, research free/open-source alternatives, enforce visual demo walkthrough, output executable optimization plans with cleanup. |
 | [git-safety-guard](./skills/git-safety-guard/SKILL.md) | Pre-commit secret scanning, .gitignore audit, and pull-modify-commit-push workflow enforcement. |
 | [rea-reverse-engineering](./skills/rea-reverse-engineering/SKILL.md) | AI-assisted reverse engineering via REA MCP Server (115K stars). Orchestrates Hopper/Ghidra/JADX/Binwalk for binaries, APKs, Electron apps, .NET assemblies, websites. Evidence-based analysis + functional-equivalent reimplementation. |
+| [leanrea](./skills/leanrea/SKILL.md) | 8KB lightweight REA alternative. Pure SKILL.md, zero dependencies, 99.9% smaller than REA. Tells AI which native commands to use per target type (Electron/asar, Web bundles, Mach-O/ELF/PE, Go/Rust/.NET, APK, Flutter, WASM, firmware). 38% faster, 35% cheaper, 56% fewer interaction rounds. |
 | [context-mode](./skills/context-mode/SKILL.md) | MCP server that optimizes AI coding context windows. Sandbox execution + FTS5 indexing reduces context consumption by 98%. Session continuity across compaction. Think-in-code paradigm. |
 | [skills-cli](./skills/skills-cli/SKILL.md) | Vercel Labs open-source CLI for agent skills ecosystem. Install/discover/update/share skills across 80+ AI coding agents. `npx skills add/find/update/validate`. |
 | [code-quality-review](./skills/code-quality-review/SKILL.md) | Read-only review of structural or abstraction changes for consequential maintainability risks. Flags architectural debt, over-abstraction, and hidden coupling in large diffs. |
