@@ -1,124 +1,181 @@
 ---
 name: reverse-engineering-suite
-description: "Unified reverse-engineering suite covering three target types: source code (reverse into PRD), binaries (decompile + analyze + reimplement), and websites (traffic + frontend + behavior reconstruction). Auto-detects target type from input, routes to the correct pipeline, and produces evidence-based analysis reports, PRDs, and functional-equivalent code scaffolds. Use when: user asks to reverse-engineer, decompile, analyze a codebase, extract product specs from code, understand a binary/APK/Electron app, reconstruct a website, clone functionality, or says '逆向', '反编译', '代码转PRD', '分析这个程序', '复刻这个功能'."
+description: "Unified reverse-engineering suite (v2.0 dual-mode) covering three target types: source code (reverse into PRD), binaries (Heavy REA MCP OR zero-dependency Lean native tools), and websites (traffic + frontend + behavior reconstruction). Auto-detects target type, routes to correct pipeline, auto-falls back to Lean mode when REA MCP unavailable. Every conclusion labeled confirmed/inferred/unknown. Use when: reverse-engineer, decompile, analyze codebase, extract product specs, understand binary/APK/Electron app, reconstruct website, clone functionality, 逆向, 反编译, 代码转PRD, 分析程序, 复刻功能, 二进制分析."
 license: MIT
 metadata:
   author: AthenDrakomin-hub
-  version: "1.0.0"
+  version: "2.0.0"
   category: reverse-engineering
-  sources: merged from code-to-prd + rea-reverse-engineering
+  sources: "merged from code-to-prd + rea-reverse-engineering v3.0 + leanrea methodology"
 ---
 
-# Reverse Engineering Suite
+# Reverse Engineering Suite v2.0
 
 ## Role
 
-You are a senior reverse-engineering analyst who handles the full spectrum: source code, compiled binaries, and live websites. You auto-detect the target type from whatever the user provides, select the correct pipeline, and deliver evidence-based outputs — never guesses. Every conclusion cites a file, line, tool output, or network capture as proof.
+Senior reverse-engineering analyst handling the full spectrum: source code, compiled binaries, and live websites. Auto-detect target type, select the correct pipeline, deliver evidence-based outputs — never guesses. Every conclusion cites a file, line, tool output, or network capture as proof, labeled `confirmed` / `inferred` / `unknown`.
+
+## Dual-Mode Binary Analysis (Path B)
+
+| Mode | Trigger | Dependencies | Best for |
+|---|---|---|---|
+| **Heavy** | REA MCP available | Node 22.19+, REA MCP, Ghidra/JADX/Binwalk | Deep decompilation, runtime tracing, large binaries |
+| **Lean** | REA unavailable / user says "quick scan" | Zero install — native shell tools | Fast understanding, Electron/APK/Web, string & import analysis |
+
+**Rule:** Detect REA first (`rea --version` or MCP tool list). Available → Heavy default. Unavailable → **auto-fallback to Lean, never refuse the task.**
 
 ## Auto-Detection (No User Confirmation Needed)
 
-Inspect the user's input and classify immediately:
-
 | Input signal | Target type | Pipeline | Primary output |
 |---|---|---|---|
-| A directory path containing `package.json`, `pom.xml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `src/`, `app/`, `pages/` | **Source code** | Path A | PRD + functional inventory |
-| A file with extension `.apk`, `.exe`, `.dll`, `.so`, `.dylib`, `.app`, `.bin`, `.elf`, `.class`, `.jar`, `.wasm` | **Binary** | Path B | Analysis report + reimplementation scaffold |
-| An `http://` or `https://` URL, or a request to "clone / reconstruct / understand this website" | **Website** | Path C | Behavior spec + frontend/backend reconstruction |
-| Ambiguous (e.g. just "analyze this project" with no path) | Ask for the path or URL once, then auto-detect | — | — |
+| Directory with `package.json`, `pom.xml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `src/`, `app/`, `pages/` | **Source code** | Path A | PRD + functional inventory |
+| File `.apk`, `.exe`, `.dll`, `.so`, `.dylib`, `.app`, `.bin`, `.elf`, `.class`, `.jar`, `.wasm`, `.asar` | **Binary** | Path B | Analysis report + reimplementation scaffold |
+| `http://` / `https://` URL, or "clone / reconstruct / understand this website" | **Website** | Path C | Behavior spec + frontend/backend reconstruction |
+| Ambiguous | Ask for path/URL once, then auto-detect | — | — |
 
-Do not ask the user which pipeline to use. Detect it. If the target spans two types (e.g. an Electron app = binary + website), run Path B first for the binary shell, then Path C for the embedded web content, and merge the outputs.
+If target spans two types (e.g. Electron = binary + website), run Path B first for the shell, then Path C for embedded web content, merge outputs.
 
 ## Universal 5-Step Workflow
 
-Every pipeline follows these five steps. The details differ by path (see references), but the structure is identical.
-
 ### Step 1 — Inventory & Scope
-List what was provided, what is missing, and what the analysis covers. State limitations upfront (e.g. "no debug symbols", "frontend only, backend not accessible").
+List what was provided, what's missing, what analysis covers. State limitations upfront.
 
-### Step 2 — Acquisition
-Gather raw evidence:
-- **Source:** run `scripts/codebase_analyzer.py <dir> -o analysis.json`
-- **Binary:** run `scripts/check-env.ps1`, then use REA CLI / Ghidra / JADX / Binwalk per `references/target-routing.md`
-- **Website:** capture network traffic (HAR / DevTools), download frontend assets, map API endpoints
+### Step 2 — Acquisition (Lean principle: batch probe in one call)
+Gather raw evidence with **merged shell calls** to minimize round-trips:
+- **Source:** `scripts/codebase_analyzer.py <dir> -o analysis.json`
+- **Binary (Lean):** `file target; ls -lh target; strings target | wc -l; objdump -p target 2>/dev/null | grep NEEDED` — one call gets type + size + string count + imports
+- **Binary (Heavy):** `scripts/check-env.ps1` then REA CLI per `references/target-routing.md`
+- **Website:** capture HAR, download frontend assets, map API endpoints
 
 ### Step 3 — Structured Analysis
-Decompose into modules. For each module record: purpose, inputs, outputs, dependencies, data models, key algorithms. Use `references/module-breakdown-template.md`.
+Decompose into modules. For each: purpose, inputs, outputs, dependencies, data models, key algorithms. Use `references/module-breakdown-template.md`.
 
 ### Step 4 — Output Generation
-Produce the deliverables appropriate to the pipeline:
 - **Path A:** full PRD via `scripts/prd_scaffolder.py analysis.json -o prd/`
-- **Path B:** analysis report (`references/report-template.md`) + reimplementation plan (`references/replication-guide.md`)
+- **Path B:** analysis report + reimplementation plan
 - **Path C:** behavior spec + API inventory + frontend component tree
 
 ### Step 5 — Verification
-Validate against `references/verification-checklist.md`:
-- Every claimed feature traces to evidence
-- No fabricated endpoints or functions
-- Output is detailed enough for an engineer or AI agent to reconstruct
-- Safety boundaries respected (Path B only)
+Every claimed feature traces to evidence. No fabricated endpoints/functions. Output detailed enough for reconstruction. Safety boundaries respected.
 
 ---
 
 ## Path A — Source Code → PRD
 
-### When activated
-Target is a readable source directory.
-
 ### What you do
-1. Run `codebase_analyzer.py` to get routes, components, models, API calls, state management, and enums.
-2. Detect framework from config files (see `references/framework-patterns.md`).
+1. Run `codebase_analyzer.py` → routes, components, models, API calls, state, enums.
+2. Detect framework from config files (`references/framework-patterns.md`).
 3. Distinguish real API integrations from mock/fixture data — flag mocks explicitly.
-4. Generate per-page documentation: purpose, fields, interactions, navigation, API calls, state dependencies.
-5. Extract all enums, status codes, and type mappings into a dictionary.
-6. Run `prd_scaffolder.py` to build the PRD directory structure.
-7. Fill in business-readable descriptions for each page and endpoint.
+4. Generate per-page docs: purpose, fields, interactions, navigation, API calls, state dependencies.
+5. Extract all enums, status codes, type mappings into a dictionary.
+6. Run `prd_scaffolder.py` to build PRD directory structure.
+7. Fill business-readable descriptions.
 
 ### Output structure
 ```
 prd/
-├── README.md              # Executive summary, tech stack, feature matrix
-├── pages/                 # One doc per page/route
-├── api/                   # One doc per endpoint (request/response/errors)
-├── models/                # Data model schemas
-├── enums.md               # All status codes, type mappings, constants
-└── state.md               # State management map
+├── README.md          # Executive summary, tech stack, feature matrix
+├── pages/             # One doc per page/route
+├── api/               # One doc per endpoint (request/response/errors)
+├── models/            # Data model schemas
+├── enums.md           # All status codes, type mappings, constants
+└── state.md           # State management map
 ```
 
 ### Quality bar
-A page doc must list every field, its type, validation rules, source (API / computed / hardcoded), and what happens on each user interaction. An endpoint doc must include method, path, auth, request schema, response schema, and error codes. If you cannot determine something from code, mark it `[undetermined]` — do not invent.
+Page doc: every field with type, validation rules, source (API/computed/hardcoded), interaction behavior. Endpoint doc: method, path, auth, request schema, response schema, error codes. Unknown → mark `[undetermined]`, never invent.
 
 ---
 
-## Path B — Binary → Analysis + Reimplementation
-
-### When activated
-Target is a compiled binary, APK, Electron app, .NET assembly, or firmware.
+## Path B — Binary → Analysis + Reimplementation (Dual-Mode)
 
 ### Safety invariants (non-negotiable)
-1. **Legal use only:** the user must own or be authorized to analyze the target. State this assumption in the report.
-2. **No cracking:** never output deobfuscation, license bypass, DRM removal, or serial-key generation steps.
-3. **No fabrication:** every finding cites tool output. If REA/Ghidra did not run, say so.
-4. **Functional equivalence only:** reimplementation means independent rewrite, not byte-level copy. Do not reproduce copyrighted assets, branding, or proprietary UI verbatim — redesign them.
-5. **Local execution:** binaries are analyzed on the user's machine. Remind the user that tool outputs may be processed by their AI provider.
+1. **Legal use only:** user must own or be authorized. State this assumption.
+2. **No cracking:** no deobfuscation, license bypass, DRM removal, serial-key generation.
+3. **No fabrication:** every finding cites tool output. If tool didn't run, say so.
+4. **Functional equivalence only:** independent rewrite, not byte-level copy. No copyrighted assets/branding/UI.
+5. **Local execution:** binaries analyzed on user's machine. Remind user tool outputs may go to AI provider.
 
-### What you do
-1. Run `scripts/check-env.ps1` to verify Node >= 22.19, REA CLI, and available engines (Ghidra / IDA / JADX / Binwalk).
-2. Identify target subtype from extension and file header — route per `references/target-routing.md`:
-   - APK → JADX + Apktool + aapt
-   - Electron → asar extract + Node module analysis
-   - .NET → ILSpy / dnSpy
-   - PE/ELF → Ghidra / IDA
-   - Firmware → Binwalk + strings
-3. Execute analysis: strings, imports/exports, control flow, data cross-references.
-4. Build module breakdown using `references/module-breakdown-template.md`.
-5. Write the analysis report using `references/report-template.md`.
-6. Produce a reimplementation plan using `references/replication-guide.md` — module by module, with tech-stack mapping and estimated complexity.
-7. If the user requests actual code, generate independent reimplementations of non-copyrightable logic (algorithms, data structures, API contracts). Never copy decompiled output verbatim.
+### Step B1 — Mode detection
+```powershell
+rea --version  # Heavy available?
+# If not found → Lean mode auto-engaged
+```
+
+### Step B2 — Target subtype routing (Lean: by magic bytes, not just extension)
+
+| Subtype | Magic bytes / signal | Lean commands | Heavy engine |
+|---|---|---|---|
+| Electron/asar | `.asar`, `package.json` with `main` | `npx asar extract` → `rg -uu` | REA JS analyzer |
+| Mach-O | `CF FA ED FE` / `FE ED FA CF` | `otool -l`, `strings`, `otool -ov` | Hopper/Ghidra |
+| ELF | `7F 45 4C 46` | `readelf`, `objdump -p`, `strings` | Ghidra/IDA |
+| PE | `4D 5A` (MZ) | `strings`, `dumpbin /imports` | Ghidra/IDA |
+| Go binary | `runtime.`, `go.buildinfo` in strings | `go version -m`, `strings \| grep runtime` | Ghidra |
+| Rust binary | `rust_`, `cargo auditable` | `strings`, `cargo auditable` | Ghidra |
+| .NET | CLR header, `_CorExeMain` | `ilspycmd`, `monodis` | ILSpy/dnSpy |
+| Android APK | `.apk` (ZIP `50 4B`) | `jadx --no-res`, `apktool d` | JADX + REA |
+| Flutter | `libflutter.so`, snapshot hash | `strings` search snapshot | Ghidra |
+| WASM | `00 61 73 6D` | `wasm-objdump`, `strings` | — |
+| SQLite | `53 51 4C 69` | `sqlite3 .dump` | — |
+| Firmware | `.bin`/`.img`/`.fw` | `binwalk -e`, `file` | Binwalk + Ghidra |
+
+**Unsure?** Check first 4 bytes:
+```bash
+python3 -c "print(open('target','rb').read(4).hex())"
+```
+
+### Step B3 — Lean mode core techniques
+
+**1. Slice reading, never load whole file into context**
+```bash
+head -c 200 target.js          # header only
+rg -n "login|encrypt|token" target.js | head -50  # search, don't read
+```
+
+**2. Batch probe in one shell call**
+```bash
+file target; ls -lh target; strings target | wc -l; objdump -p target | grep NEEDED
+```
+
+**3. `rg -uu` for extracted dirs** (packers hide code in dot-directories like `.webpack/`)
+```bash
+npx asar extract app.asar ./extracted
+rg -uu "ipcMain|preload|contextBridge" ./extracted/
+```
+
+**4. Start from strings & imports, locate functions via literal pools**
+```bash
+# Mach-O: string in __cstring → find function referencing it
+otool -v -s __TEXT __cstring target | head -100
+```
+
+**5. Read call sequences, not every instruction**
+```bash
+objdump -d target | grep "^[0-9a-f]* <" > functions.txt  # inventory first
+objdump -d target --start-address=0x1000 --stop-address=0x2000  # then target function
+```
+
+**6. Electron focus:** IPC channels (`ipcMain.handle`), preload scripts, `contextBridge`, fuses config.
+
+**7. APK focus:** Manifest permissions/components first, then `rg -uu` for API/secret/key in sources.
+
+### Step B4 — Heavy mode (when available)
+Full REA CLI commands in `references/target-routing.md`. Use `--json` for structured output. Large binaries (>50MB): string+import scan first, then targeted decompile.
+
+### Step B5 — Report with evidence levels
+
+Every finding must carry one of:
+
+| Level | Meaning | Example |
+|---|---|---|
+| `confirmed` | Tool output directly proves | "strings output line 1234: API_URL=https://api.example.com" |
+| `inferred` | Reasonable inference from evidence | "Imports libcrypto.so → likely uses OpenSSL (algorithm unconfirmed)" |
+| `unknown` | Cannot determine | "Function logic too complex for pseudocode, needs manual review" |
 
 ### Output structure
 ```
 reverse-report/
-├── report.md              # Full analysis with evidence citations
+├── report.md              # Full analysis with evidence citations + levels
 ├── modules/               # One doc per identified module
 ├── strings/               # Extracted string catalog (if relevant)
 ├── reimplementation-plan.md
@@ -129,15 +186,12 @@ reverse-report/
 
 ## Path C — Website → Behavior Reconstruction
 
-### When activated
-Target is a URL or a request to understand/clone a website.
-
 ### What you do
-1. **Frontend mapping:** download the page, extract the component tree from bundled JS, identify framework (React/Vue/Angular/vanilla), and list routes.
-2. **API discovery:** capture network requests (HAR export or DevTools). For each endpoint record: method, path, request payload, response shape, auth headers, pagination.
-3. **Behavior spec:** document user flows step by step — what happens on each click, input, and navigation. Include loading states, error states, and empty states.
-4. **Data model inference:** derive entities and relationships from API responses and frontend state.
-5. **Reconstruction output:** produce a behavior spec + API inventory + frontend component map. If the user wants code, generate a clean-room frontend scaffold (your own implementation, not a copy of their assets).
+1. **Frontend mapping:** download page, extract component tree from bundled JS, identify framework, list routes. Use `rg -n "api|fetch|token"` on downloaded JS instead of reading whole files.
+2. **API discovery:** capture network (HAR/DevTools). For each endpoint: method, path, payload, response shape, auth, pagination.
+3. **Behavior spec:** document user flows step by step — clicks, inputs, navigation, loading/error/empty states.
+4. **Data model inference:** derive entities and relationships from API responses + frontend state.
+5. **Reconstruction output:** behavior spec + API inventory + frontend component map. Code → clean-room scaffold (your own implementation, not asset copy).
 
 ### Output structure
 ```
@@ -150,34 +204,42 @@ website-report/
 ```
 
 ### Ethics
-Do not reproduce proprietary branding, copy, or visual assets verbatim. Reconstruct behavior and API contracts, then redesign the UI independently. If the site requires authentication, only analyze what the user's own account can access.
+No proprietary branding/copy/visual assets verbatim. Reconstruct behavior and API contracts, redesign UI independently. Only analyze what user's own account can access.
 
 ---
 
 ## Cross-Path Rules
 
-1. **Evidence first:** every claim in any output must cite `file:line`, tool output, or a captured request. Uncited claims are marked `[unverified]`.
-2. **No silent assumptions:** if a target is obfuscated, minified, or lacks debug symbols, say so and reduce the confidence rating of affected findings.
-3. **Output language:** match the user's language. Code and technical identifiers stay in English.
-4. **Line discipline:** keep this SKILL.md as the orchestrator. Deep per-path instructions live in `references/` and are loaded on demand.
-5. **Tool preference:** use the bundled scripts (`codebase_analyzer.py`, `prd_scaffolder.py`, `check-env.ps1`) before writing custom one-off scripts.
+1. **Evidence first:** every claim cites `file:line`, tool output, or captured request. Uncited → `[unverified]`.
+2. **Evidence levels:** binary findings labeled `confirmed`/`inferred`/`unknown`.
+3. **No silent assumptions:** obfuscated/minified/no-debug-symbols → say so, reduce confidence.
+4. **Batch calls:** merge detection commands into one shell invocation to minimize round-trips.
+5. **Slice reading:** never Read whole large files; use `rg`/`head`/address-range disassembly.
+6. **Output language:** match user's language. Code/identifiers stay English.
+7. **Line discipline:** this file is the orchestrator. Deep per-path instructions in `references/`, loaded on demand.
+8. **Tool preference:** bundled scripts first (`codebase_analyzer.py`, `prd_scaffolder.py`, `check-env.ps1`), then native tools, then custom one-offs.
 
-## Quick Start Examples
+## Quick Start
 
 ```bash
-# Source code → PRD
+# Source → PRD
 python3 scripts/codebase_analyzer.py ./my-app -o analysis.json
 python3 scripts/prd_scaffolder.py analysis.json -o prd/ -n "My App"
 
-# Binary → analysis (Windows)
-powershell -ExecutionPolicy Bypass -File scripts/check-env.ps1
-# then follow references/target-routing.md for the specific binary type
+# Binary → Lean mode (no install needed)
+file target; strings target | head -50; objdump -p target | grep NEEDED
+# Electron: npx asar extract app.asar ./out && rg -uu "ipcMain" ./out/
+# APK: jadx --no-res --output-dir ./out app.apk && rg -uu "api" ./out/sources/
 
-# Website → provide URL; the agent handles capture and mapping
+# Binary → Heavy mode (REA available)
+powershell -ExecutionPolicy Bypass -File scripts/check-env.ps1
+
+# Website → provide URL; agent handles capture and mapping
 ```
 
 ## References
-- `references/target-routing.md` — Binary subtype detection and engine selection matrix
+- `references/target-routing.md` — Binary subtype detection and engine selection matrix (Heavy mode)
+- `references/lean-command-cheatsheet.md` — Complete native command reference per target type (Lean mode)
 - `references/framework-patterns.md` — Frontend/backend framework detection rules
 - `references/module-breakdown-template.md` — Standard module analysis template
 - `references/report-template.md` — Binary analysis report structure
