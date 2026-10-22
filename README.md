@@ -1,6 +1,6 @@
 # agent-skills
 
-A curated collection of 33 high-quality AI Agent Skills for development, DevOps, design, and content automation. Every skill ships with executable scripts or structured references — no pure prompt filler.
+A curated collection of 34 high-quality AI Agent Skills for development, DevOps, design, and content automation. Every skill ships with executable scripts or structured references — no pure prompt filler.
 
 ## Skills (33)
 
@@ -56,6 +56,7 @@ A curated collection of 33 high-quality AI Agent Skills for development, DevOps,
 | [ad-creative](./skills/ad-creative/SKILL.md) | Ad creative generation with headline variations, hook patterns, and platform-specific copy structures. |
 | [ads](./skills/ads/SKILL.md) | Paid advertising campaign help for Google Ads, Meta, LinkedIn, Twitter/X and other platforms. Campaign strategy, audience targeting, bidding, ROAS/CPA optimization, ABM and retargeting, with 15 deep-dive references. |
 | [ai-writing-detector](./skills/ai-writing-detector/SKILL.md) | Scan text for 22 AI writing patterns and produce per-location detection reports. Diagnosis-only by default, no rewriting. |
+| [inverse-thinking-content-creator](./skills/inverse-thinking-content-creator/SKILL.md) | 逆向思维内容创作（带自动化校验）。先从失败路径、风险信号和人性弱点切入，再推导稳健行动原则。内置 content-check.py 校验失败路径覆盖、规避原则、金句结构，拦截具体买卖指令和收益承诺。 |
 | [copywriting](./skills/copywriting/SKILL.md) | Product copywriting framework: positioning, value propositions, personas, feature-to-benefit conversion, and multi-length product descriptions. |
 | [cro](./skills/cro/SKILL.md) | Conversion rate optimization: landing page structure, hero copy, pain points, social proof, pricing anchoring, and CTA design. |
 | [social](./skills/social/SKILL.md) | Social media content package generation across platforms with post variations, hashtags, and engagement hooks. |
